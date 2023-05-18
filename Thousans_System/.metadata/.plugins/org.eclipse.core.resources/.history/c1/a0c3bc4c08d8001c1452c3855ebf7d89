@@ -1,0 +1,519 @@
+package com.King.from.user;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import com.King.from.login.LoginUser;
+import com.King.pojo.User;
+import com.King.serives.UserServices;
+
+public class UserPande3 extends UserJPanel{
+    private JTextField searchbox;
+    private JTextField user_name;
+    private JTextField user_phone;
+    private JTextField user_gainame;
+    private JTextField user_gaipwd;
+    String name1=null;
+
+   public UserPande3() {
+	setBounds(0,0,1592, 925);
+	setLayout(null);
+	
+	JLabel body = new JLabel();
+	body.setBounds(-21, -23, 1561, 948);
+    
+  //初始化装值
+    String usere=LoginUser.name();
+    User entt=new User();
+    entt.setAccount(usere);
+    
+	try {
+		 entt = UserServices.accountcha(entt);
+		name1=entt.getAccount();
+	} catch (SQLException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+    
+    
+    //初始化装值
+   String  useree=LoginUser.name();
+    User entte=new User();
+    entte.setAccount(useree);
+    
+	try {
+		 entte = UserServices.accountcha(entte);
+		name1=entte.getAccount();
+	} catch (SQLException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+    setLayout(null);
+    
+	
+	
+    
+	add(body);
+	
+		//修改资料密码的子类实现窗口
+	    JPanel datum = new JPanel();
+	    add(datum);
+	    datum.setBackground(new Color(255, 140, 0));
+	    datum.setBounds(-21, -23, 1613, 948);
+	    datum.setLayout(null);
+	    //修改资料页面
+	    JPanel change_information = new JPanel();
+	    change_information.setBounds(294, 0, 1298, 925);
+	    datum.add(change_information);
+	    change_information.setLayout(null);
+	    change_information.setVisible(true);
+	    //修改资料的组件
+	    JLabel lblNewLabel_1 = new JLabel("\u539F\u4FE1\u606F\uFF1A");
+	    lblNewLabel_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+	    lblNewLabel_1.setBounds(185, 176, 99, 48);
+	    change_information.add(lblNewLabel_1);
+	    
+	    JLabel lblNewLabel_1_1 = new JLabel("\u59D3\u540D\uFF1A");
+	    lblNewLabel_1_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+	    lblNewLabel_1_1.setBounds(185, 250, 90, 48);
+	    change_information.add(lblNewLabel_1_1);
+	    
+	    JLabel lblNewLabel_1_1_1 = new JLabel("\u5730\u5740\uFF1A");
+	    lblNewLabel_1_1_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+	    lblNewLabel_1_1_1.setBounds(185, 396, 99, 48);
+	    change_information.add(lblNewLabel_1_1_1);
+	    
+	    JLabel lblNewLabel_1_1_1_1 = new JLabel("\u624B\u673A\u53F7\u7801\uFF1A");
+	    lblNewLabel_1_1_1_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+	    lblNewLabel_1_1_1_1.setBounds(185, 325, 99, 48);
+	    change_information.add(lblNewLabel_1_1_1_1);
+	    
+	    
+	    user_name = new JTextField();
+	    user_name.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+	    user_name.setBounds(299, 255, 266, 40);
+	    change_information.add(user_name);
+	    user_name.setColumns(10);
+	    
+	    user_phone = new JTextField();
+	    user_phone.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+	    user_phone.setColumns(10);
+	    user_phone.setBounds(299, 330, 266, 40);
+	    change_information.add(user_phone);
+	    
+	    JTextArea user_address =new JTextArea();
+	    user_address.setBounds(299, 404, 633, 152);
+	    change_information.add(user_address);
+	    user_name.setText(entt.getUserName());
+	    user_phone.setText(entt.getPassword());
+	    user_address.setText(entt.getAddres());
+	    
+    //修改资料页面的确定按钮
+    JButton btnNewButton_9 = new JButton("\u786E\u5B9A");
+    btnNewButton_9.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+         User user=new User();
+    		user.setAccount(name1);
+    		if (user_name.getText().length()>0&&user_name.getText().length()<=4) {
+				if (user_phone.getText().length()>0&&user_phone.getText().length()<=11) {
+					user.setUserName(user_name.getText());//修改的姓名
+		    		user.setAddres(user_address.getText());//修改的地址
+		    		user.setUserPhone(user_phone.getText());//修改的手机号码
+		    		//用于判断用户是否进行了修改账号和密码的操作，如果用户没有修改则提示用户修改后进行
+			
+					   	//通过账号获取id
+					   		User name2=new User();
+					   		if (name1!=null) {
+					   			name2.setAccount(name1);
+					   			try {
+						   	    	//账号获取id
+						   	    	User id=UserServices.namechaid(name2);
+						   	    	System.out.println(id.getId());
+						   	    	
+						   	    	user.setId(id.getId());
+									if (UserServices.Updatew(user)){
+										Frame frame=new Frame();
+						           		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+						           		JOptionPane.showMessageDialog((Component)frame,"修改成功");
+										User neirong=UserServices.namechaid(user);
+										user_name.setText(neirong.getUserName());
+										user_address.setText(neirong.getAddres());
+										user_phone.setText(neirong.getUserPhone());
+										name1=neirong.getAccount();
+									}else {
+										Frame frame=new Frame();
+						           		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+						           		JOptionPane.showMessageDialog((Component)frame,"修改失败");
+						           		
+									}
+								} catch (SQLException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}else {
+								name2.setAccount(LoginUser.name());
+							}
+				}else {
+					Frame frame=new Frame();
+	           		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+	           		JOptionPane.showMessageDialog((Component)frame,"电话不符合“电话不合法”","警告",2);
+	           		
+				}
+			}else {
+				Frame frame=new Frame();
+           		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+           		JOptionPane.showMessageDialog((Component)frame,"姓名不符合“姓名不合法”","警告",2);
+           		
+			}
+    		  	
+    	}
+    });
+    btnNewButton_9.setFont(new Font("微软雅黑", Font.PLAIN, 30));
+    btnNewButton_9.setBounds(185, 623, 188, 75);
+    change_information.add(btnNewButton_9);
+    btnNewButton_9.setContentAreaFilled(false);		//将按钮设为透明
+    btnNewButton_9.setFocusable(false);//设置点击时候字旁边的边框
+    btnNewButton_9.setContentAreaFilled(false);
+    btnNewButton_9.setBorderPainted(false);//关闭按钮的边框
+    
+    
+    //修改资料的重置按钮
+    JButton btnNewButton_9_1 = new JButton("\u91CD\u7F6E");
+    btnNewButton_9_1.addMouseListener(new MouseAdapter() {
+    	@Override
+    	public void mousePressed(MouseEvent e) {
+    		user_name.setText(null);
+			user_address.setText(null);
+			user_phone.setText(null);
+			Frame frame=new Frame();
+    		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+    		JOptionPane.showMessageDialog((Component)frame,"重置成功");
+    	}
+    });
+    btnNewButton_9_1.setFont(new Font("微软雅黑", Font.PLAIN, 30));
+    btnNewButton_9_1.setBounds(537, 623, 188, 75);
+    change_information.add(btnNewButton_9_1);
+    btnNewButton_9_1.setContentAreaFilled(false);		//将按钮设为透明
+    btnNewButton_9_1.setFocusable(false);//设置点击时候字旁边的边框
+    btnNewButton_9_1.setContentAreaFilled(false);
+    btnNewButton_9_1.setBorderPainted(false);//关闭按钮的边框
+    
+    //修改资料的注销账号的按钮
+    JButton btnNewButton_9_2 = new JButton("\u6CE8\u9500\u8D26\u53F7");
+    btnNewButton_9_2.addMouseListener(new MouseAdapter() {
+    	@Override
+    	public void mousePressed(MouseEvent e) {
+    		
+    		User u=new User();
+    		u.setAccount(LoginUser.name());
+    		Frame frame=new Frame();
+    		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+    	    String usere=null;
+			//弹出二次警告窗口，如果用户继续选择是那么注销账户操作执行，反之操作撤销
+    		if (JOptionPane.showConfirmDialog((Component)frame,"您确定注销账号吗！！",usere, JOptionPane.YES_NO_OPTION)==0) {
+    			if (UserServices.dorp(u)) {
+    				 frame=new Frame();
+            		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+            		JOptionPane.showConfirmDialog((Component)frame,"注销成功！");
+            		dispose();
+            		// 本窗口销毁,释放内存资源
+            		//注销成功直接退出系统，提示重新登录页面
+            		new LoginUser().setVisible(true);
+				}else {
+					frame=new Frame();
+            		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+            		JOptionPane.showConfirmDialog((Component)frame,"注销失败！");
+				}
+			}
+    		
+    		
+    	}
+    });
+    btnNewButton_9_2.setFont(new Font("微软雅黑", Font.PLAIN, 30));
+    btnNewButton_9_2.setBounds(917, 623, 188, 75);
+    change_information.add(btnNewButton_9_2);
+    btnNewButton_9_2.setContentAreaFilled(false);		//将按钮设为透明
+    btnNewButton_9_2.setFocusable(false);//设置点击时候字旁边的边框
+    btnNewButton_9_2.setContentAreaFilled(false);
+    btnNewButton_9_2.setBorderPainted(false);//关闭按钮的边框
+    
+    //修改密码页面
+    JPanel change_password = new JPanel();
+    change_password.setBackground(new Color(255, 255, 255));
+    change_password.setBounds(296, 0, 1296, 925);
+    datum.add(change_password);
+    change_password.setLayout(null);
+    change_password.setVisible(false);
+    
+    
+    //修改资料按钮
+    JButton btnNewButton_8 = new JButton("\u4FEE\u6539\u8D44\u6599");
+    btnNewButton_8.setForeground(Color.WHITE);
+    btnNewButton_8.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    		
+    		change_password.setVisible(false);
+    		change_information.setVisible(true);
+    		
+    	}
+    });
+    btnNewButton_8.setFont(new Font("微软雅黑", Font.PLAIN, 30));
+    btnNewButton_8.setBounds(44, 263, 224, 71);
+    datum.add(btnNewButton_8);
+    btnNewButton_8.setContentAreaFilled(false);		//将按钮设为透明
+    btnNewButton_8.setFocusable(false);//设置点击时候字旁边的边框
+    btnNewButton_8.setContentAreaFilled(false);
+    btnNewButton_8.setBorderPainted(false);//关闭按钮的边框
+    
+      
+      
+      
+     
+      
+      
+      
+      
+      //修改密码按钮
+      JButton btnNewButton_8_1 = new JButton("\u4FEE\u6539\u5BC6\u7801");
+      //按钮的初始化颜色
+      btnNewButton_8_1.setForeground(Color.WHITE);
+      btnNewButton_8_1.addActionListener(new ActionListener() {
+      	public void actionPerformed(ActionEvent e) {
+      		change_information.setVisible(false);
+      		change_password.setVisible(true);
+      	}
+      });
+      //设置按钮的响应时间做动态效果
+      btnNewButton_8_1.addMouseListener((MouseListener) new MouseListener(){
+			
+ 	   public void mouseClicked(MouseEvent e) {
+				// 处理鼠标点击
+			}
+			public void mouseEntered(MouseEvent e) {
+				// 处理鼠标移入
+			}
+			public void mouseExited(MouseEvent e) {
+				// 处理鼠标离开
+			}
+			public void mousePressed(MouseEvent e) {
+				// 处理鼠标按下
+				btnNewButton_8_1.setForeground(Color.black);
+				btnNewButton_8.setForeground(Color.WHITE);
+			}
+			public void mouseReleased(MouseEvent e) {
+				// 处理鼠标释放
+				
+			}
+			
+		});
+      
+  //设置按钮的响应时间做动态效果
+      btnNewButton_8.addMouseListener((MouseListener) new MouseListener(){
+			
+ 	   public void mouseClicked(MouseEvent e) {
+				// 处理鼠标点击
+			}
+			public void mouseEntered(MouseEvent e) {
+				// 处理鼠标移入
+			}
+			public void mouseExited(MouseEvent e) {
+				// 处理鼠标离开
+			}
+			public void mousePressed(MouseEvent e) {
+				// 处理鼠标按下
+				btnNewButton_8.setForeground(Color.black);
+				btnNewButton_8_1.setForeground(Color.WHITE);
+			}
+			public void mouseReleased(MouseEvent e) {
+				// 处理鼠标释放
+				
+			}
+			
+		});
+      
+      
+      btnNewButton_8_1.setFont(new Font("微软雅黑", Font.PLAIN, 30));
+      btnNewButton_8_1.setBounds(44, 509, 224, 71);
+      datum.add(btnNewButton_8_1);
+      btnNewButton_8_1.setContentAreaFilled(false);		//将按钮设为透明
+      btnNewButton_8_1.setFocusable(false);//设置点击时候字旁边的边框
+      btnNewButton_8_1.setContentAreaFilled(false);
+      btnNewButton_8_1.setBorderPainted(false);//关闭按钮的边框
+      
+      
+      
+      
+   
+      
+      
+      JLabel lblNewLabel_2 = new JLabel("\u539F\u4FE1\u606F:");
+      lblNewLabel_2.setFont(new Font("微软雅黑", Font.PLAIN, 30));
+      lblNewLabel_2.setBounds(345, 202, 108, 55);
+      change_password.add(lblNewLabel_2);
+      
+          
+      
+          JLabel lblNewLabel_2_1 = new JLabel("\u8D26\u53F7\uFF1A");
+          lblNewLabel_2_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+          lblNewLabel_2_1.setBounds(345, 301, 108, 55);
+          change_password.add(lblNewLabel_2_1);
+          
+            JLabel lblNewLabel_2_2 = new JLabel("\u5BC6\u7801:");
+            lblNewLabel_2_2.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+            lblNewLabel_2_2.setBounds(345, 406, 108, 55);
+            change_password.add(lblNewLabel_2_2);
+            
+            JTextField user_gainame_1 = new JTextField();
+            user_gainame_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+            user_gainame_1.setBounds(435, 306, 302, 42);
+            change_password.add(user_gainame_1);
+            user_gainame_1.setColumns(10);
+            
+            JTextField user_gaipwd_1 = new JTextField();
+            user_gaipwd_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+            user_gaipwd_1.setColumns(10);
+            user_gaipwd_1.setBounds(435, 414, 302, 42);
+            change_password.add(user_gaipwd_1);
+            //修改密码的重置按钮
+              JButton btnNewButton_11_1 = new JButton("\u91CD\u7F6E");
+              btnNewButton_11_1.addMouseListener(new MouseAdapter() {
+              	@Override
+              	public void mousePressed(MouseEvent e) {
+              		user_gainame_1.setText(null);
+			user_gaipwd_1.setText(null);
+			Frame frame=new Frame();
+              		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+              		JOptionPane.showMessageDialog((Component)frame,"重置成功");
+              	}
+              });
+              btnNewButton_11_1.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+              btnNewButton_11_1.setBounds(560, 562, 209, 65);
+              change_password.add(btnNewButton_11_1);
+              btnNewButton_11_1.setContentAreaFilled(false);		//将按钮设为透明
+              btnNewButton_11_1.setFocusable(false);//设置点击时候字旁边的边框
+              btnNewButton_11_1.setContentAreaFilled(false);
+              btnNewButton_11_1.setBorderPainted(false);//关闭按钮的边框
+              user_gainame_1.setText(entte.getAccount());
+              user_gaipwd_1.setText(entte.getPassword());
+              //修改密码的确定按钮
+              JButton btnNewButton_11 = new JButton("\u786E\u5B9A");
+              btnNewButton_11.addMouseListener(new MouseAdapter() {
+              	@Override
+              	public void mousePressed(MouseEvent e) {
+              		User user=new User();
+              		
+              		user.setAccount(user_gainame_1.getText());//修改的账号
+              		user.setPassword(user_gaipwd_1.getText());//修改的密码
+              		//用于判断用户是否进行了修改账号和密码的操作，如果用户没有修改则提示用户修改后进行
+			User unt=UserServices.loginUser(user);
+			System.out.println(unt);
+			String cunzai=unt.getAccount();
+			//通过获取用户输入的用户名判断是否存在，如果存在数据那么就是没有进行修改操作
+			if (cunzai==null) {
+			   	//通过账号获取id
+			   		User name2=new User();
+			   		if (name1!=null) {
+			   			name2.setAccount(name1);
+					}else {
+						name2.setAccount(LoginUser.name());
+					}
+			   		System.out.println(name2.getAccount());
+			   	    try {
+			   	    	//账号获取id
+			   	    	User id=UserServices.namechaid(name2);
+			   	    	System.out.println(id.getId());
+			   	    	user.setId(id.getId());
+						if (UserServices.Update(user)){
+							Frame frame=new Frame();
+			           		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+			           		JOptionPane.showMessageDialog((Component)frame,"修改成功");
+							User neirong=UserServices.namechaid(user);
+							user_gainame_1.setText(neirong.getAccount());
+							name1=neirong.getAccount();
+							user_gaipwd_1.setText(null);
+						}else {
+							Frame frame=new Frame();
+			           		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+			           		JOptionPane.showMessageDialog((Component)frame,"修改失败");
+			           		
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			   	
+			   	}else {
+			   		Frame frame=new Frame();
+			   		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+			   		JOptionPane.showMessageDialog((Component)frame,"请修改账号或者密码在确认修改", "警告", 2);
+ 	}
+                  		
+	           	}});
+              btnNewButton_11.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+              btnNewButton_11.setBounds(181, 562, 209, 65);
+              change_password.add(btnNewButton_11);
+              btnNewButton_11.setContentAreaFilled(false);		//将按钮设为透明
+              btnNewButton_11.setFocusable(false);//设置点击时候字旁边的边框
+              btnNewButton_11.setContentAreaFilled(false);
+              btnNewButton_11.setBorderPainted(false);//关闭按钮的边框
+              
+              
+              //修改密码的注销按钮
+              JButton btnNewButton_11_2 = new JButton("\u6CE8\u9500\u8D26\u53F7");
+              btnNewButton_11_2.addMouseListener(new MouseAdapter() {
+              	@Override
+              	public void mousePressed(MouseEvent e) {
+              		User u=new User();
+              		u.setAccount(LoginUser.name());
+              		Frame frame=new Frame();
+              		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+              	    //弹出二次警告窗口，如果用户继续选择是那么注销账户操作执行，反之操作撤销
+              		if (JOptionPane.showConfirmDialog((Component)frame,"您确定注销账号吗！！",usere, JOptionPane.YES_NO_OPTION)==0) {
+              			if (UserServices.dorp(u)) {
+              				 frame=new Frame();
+                      		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+                      		JOptionPane.showConfirmDialog((Component)frame,"注销成功！");
+                      		dispose();// 本窗口销毁,释放内存资源
+                      		//注销成功直接退出系统，提示重新登录页面
+                      		new LoginUser().setVisible(true);
+				}else {
+					 frame=new Frame();
+                       		frame.setAlwaysOnTop(true);//将弹窗放在最前面
+                       		JOptionPane.showConfirmDialog((Component)frame,"注销失败！");
+				}
+			}
+              		
+              		
+              		
+              		
+              		//System.out.println(UserServices.dorp(u));
+              	}
+              });
+              btnNewButton_11_2.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+              btnNewButton_11_2.setBounds(973, 562, 209, 65);
+              change_password.add(btnNewButton_11_2);
+              btnNewButton_11_2.setContentAreaFilled(false);		//将按钮设为透明
+              btnNewButton_11_2.setFocusable(false);//设置点击时候字旁边的边框
+              btnNewButton_11_2.setContentAreaFilled(false);
+              btnNewButton_11_2.setBorderPainted(false);//关闭按钮的边框
+}
+protected void dispose() {
+	// TODO Auto-generated method stub
+	
+}
+}

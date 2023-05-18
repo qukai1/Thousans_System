@@ -1,0 +1,275 @@
+package com.King.from.login;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
+
+import com.King.pojo.User;
+import com.King.serives.UserServices;
+import com.King.util.JavaEmailUtil;
+import com.King.util.Move;
+import com.King.util.RoundPanel;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+
+import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPasswordField;
+import javax.swing.ImageIcon;
+
+/**
+ * 注册页面
+ * @author Administrator
+ * mysql+swing
+ *
+ */
+@SuppressWarnings("serial")
+public class RegisterUser extends JFrame implements ActionListener, ChangeListener {
+	private JPanel contentPane;
+	private JTextField user1;
+	private String code;
+	UserServices services = new UserServices();
+	JButton buttom;
+	private JTextField email;
+	private JTextField textField;
+	private Timer timer;
+	private JPasswordField pass1;
+
+	/**
+	 * Create the frame.
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public RegisterUser() {
+		this.setUndecorated(true);
+		setFont(new Font("Dialog", Font.BOLD, 8));
+		setTitle("\u6CE8\u518C\u9875\u9762");
+		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int) screensize.getWidth();// 得到宽
+		int height = (int) screensize.getHeight();// 得到高
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(RegisterUser.class.getResource("/img/logo.png")));
+		setBounds(width / 2 - 400, height / 2 - 250, 796, 450);
+		//AWTUtilities.setWindowShape(this,new RoundRectangle2D.Double(0.0D, 0.0D, this.getWidth(), this.getHeight(), 40.0D,40.0D));
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setForeground(Color.PINK);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		timer = new Timer(100, this);
+
+		RoundPanel panel = new RoundPanel();
+		panel.setBounds(118, 28, 524, 398);
+		panel.setBackground(new Color(12, 12, 3, 55));
+		contentPane.add(panel);
+		panel.setLayout(null);
+
+		JLabel logoName_1 = new JLabel("\u4E07\u5BA2\u6765\u70B9\u9910\u7CFB\u7EDF");
+		logoName_1.setBounds(142, 10, 320, 56);
+		panel.add(logoName_1);
+		logoName_1.setForeground(Color.ORANGE);
+		logoName_1.setFont(new Font("幼圆", Font.BOLD, 40));
+
+		JLabel user = new JLabel("\u7528\u6237\u540D:");
+		user.setBounds(52, 63, 114, 30);
+		panel.add(user);
+		user.setForeground(Color.WHITE);
+		user.setFont(new Font("宋体", Font.PLAIN, 25));
+
+		user1 = new JTextField();
+		user1.setBounds(155, 68, 279, 30);
+		panel.add(user1);
+		user1.setColumns(10);
+
+		JLabel pass = new JLabel("\u5BC6\u7801:");
+		pass.setBounds(86, 120, 75, 30);
+		panel.add(pass);
+		pass.setForeground(Color.WHITE);
+		pass.setFont(new Font("宋体", Font.PLAIN, 25));
+
+		pass1 = new JPasswordField();
+		pass1.setBounds(155, 120, 279, 30);
+		panel.add(pass1);
+
+		JLabel email_1 = new JLabel("\u7ED1\u5B9A\u90AE\u7BB1:");
+		email_1.setBounds(39, 166, 135, 30);
+		panel.add(email_1);
+		email_1.setForeground(Color.WHITE);
+		email_1.setFont(new Font("宋体", Font.PLAIN, 25));
+
+		email = new JTextField();
+		email.setBounds(155, 166, 279, 30);
+		panel.add(email);
+		email.setColumns(10);
+		JLabel email_1_1 = new JLabel("\u9A8C\u8BC1\u7801:");
+		email_1_1.setBounds(61, 206, 105, 30);
+		panel.add(email_1_1);
+		email_1_1.setForeground(Color.WHITE);
+		email_1_1.setFont(new Font("宋体", Font.PLAIN, 25));
+		textField = new JTextField();
+		textField.setBounds(155, 208, 154, 30);
+		panel.add(textField);
+		textField.setColumns(10);
+
+		buttom = new JButton("\u83B7\u53D6\u9A8C\u8BC1\u7801");
+		buttom.setBounds(319, 206, 115, 30);
+		panel.add(buttom);
+		buttom.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.green));
+
+		JLabel pass_1 = new JLabel("\u7528\u6237\u7C7B\u578B\uFF1A");
+		pass_1.setBounds(39, 260, 154, 30);
+		panel.add(pass_1);
+		pass_1.setForeground(Color.WHITE);
+		pass_1.setFont(new Font("宋体", Font.PLAIN, 25));
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(155, 264, 287, 30);
+		panel.add(comboBox);
+		comboBox.setEditable(false);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "\u666E\u901A\u7528\u6237", "\u5546\u5BB6" }));
+
+		JButton login_1 = new JButton("\u767B\u5F55");
+		login_1.setBounds(37, 323, 100, 50);
+		panel.add(login_1);
+		login_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						setVisible(false);// 本窗口隐藏,
+						new LoginUser().setVisible(true);// 新窗口显示
+						dispose();// 本窗口销毁,释放内存资源
+					}
+				});
+			}
+		});
+		login_1.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.lightBlue));
+
+		JButton enroll = new JButton("\u6CE8\u518C");
+		enroll.setFont(new Font("宋体", Font.BOLD, 19));
+		enroll.setBounds(210, 323, 115, 50);
+		panel.add(enroll);
+		enroll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (code != null && code.equals(new String(textField.getText()))) {
+					String name = user1.getText();
+					String password = new String(pass1.getPassword());
+					String emails = email.getText();
+					if (name == null || name.trim().equals("") || name.length() <= 0 || name.isEmpty()
+							|| password == null || password.trim().equals("") || password.length() <= 0
+							|| password.isEmpty()) {
+						JOptionPane.showMessageDialog(contentPane, "用户名或密码不能为空");
+					} else {
+						services.addUser(new User(null, null, emails, name, password,
+								new String((String) comboBox.getSelectedItem())));
+						JOptionPane.showMessageDialog(contentPane, "注册成功");
+						setVisible(false);// 本窗口隐藏,
+						new LoginUser().setVisible(true);// 新窗口显示
+						dispose();// 本窗口销毁,释放内存资源
+					}
+				} else {
+					JOptionPane.showMessageDialog(contentPane, "验证码不能为空或错误");
+				}
+			}
+		});
+		enroll.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.lightBlue));
+
+		JButton password_1 = new JButton("\u627E\u56DE\u5BC6\u7801");
+		password_1.setBounds(387, 323, 100, 50);
+		panel.add(password_1);
+		password_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						setVisible(false);// 本窗口隐藏,
+						new ForgetUser().setVisible(true);// 新窗口显示
+						dispose();// 本窗口销毁,释放内存资源
+					}
+				});
+			}
+		});
+		password_1.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.lightBlue));
+		
+		JLabel lblNewLabel_2 = new JLabel(new ImageIcon(RegisterUser.class.getResource("/img/logo.png")));
+		lblNewLabel_2.setBackground(new Color(22, 12, 12, 55));
+		lblNewLabel_2.setBounds(72, 6, 60, 60);
+		panel.add(lblNewLabel_2);
+
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(RegisterUser.class.getResource("/img/\u6CE8\u518C\u754C\u9762\u56FE.gif")));
+		lblNewLabel.setBounds(0, 0, 796, 450);
+		contentPane.add(lblNewLabel);
+		buttom.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String emails = email.getText();
+				String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+				Pattern regex = Pattern.compile(check);
+				Matcher matcher = regex.matcher(new String(emails));
+				boolean isMatched = matcher.matches();
+				if (isMatched) {
+					if (buttom.getText().length() > 3) {
+						code = new JavaEmailUtil().sendAuthCodeEmail(emails);
+						buttom.setText(30 + "");
+						timer.start();
+					}
+				} else
+					JOptionPane.showMessageDialog(contentPane, "邮箱格式错误");
+			}
+		});
+
+		buttom.addActionListener(this);
+		UIManager.put("RootPane.setupButtonVisible", false);
+		this.setResizable(false);
+		new Move(this);
+
+	}
+
+	// 实现事件监听器接口中的方法
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == timer) {
+			int value = Integer.parseInt(new String(buttom.getText()));
+			if (value > 0) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				value -= 1;
+				buttom.setText(value + "");
+			} else {
+				timer.stop();
+				buttom.setText("重新获取");
+			}
+		}
+	}
+
+	public void stateChanged(ChangeEvent e1) // 实现事件监听器接口中的方法
+	{
+		String value = buttom.getText();
+		if (e1.getSource() == buttom) {
+			buttom.setText(value);
+		}
+	}
+}

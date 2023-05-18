@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="King/src"/>
+	<classpathentry kind="lib" path="King/lib/beautyeye_lnf.jar"/>
+	<classpathentry kind="lib" path="King/lib/commons-email-1.5.jar"/>
+	<classpathentry kind="lib" path="King/lib/javax.mail-1.6.2.jar"/>
+	<classpathentry kind="lib" path="King/lib/mysql-connector-java-5.1.47.jar"/>
+	<classpathentry kind="output" path="King/bin"/>
+</classpath>

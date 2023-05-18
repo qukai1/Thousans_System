@@ -1,0 +1,7 @@
+INDEX VERSION 1.131+F:\万客来点餐系统\.metadata\.plugins\org.eclipse.jdt.core
+1364904490.index
+3870424112.index
+410667158.index
+2078954530.index
+952082163.index
+3957603723.index
